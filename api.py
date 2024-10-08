@@ -25,12 +25,14 @@ async def get_discography(artist: str):
         resultats = d.search(artist, type="artist")
         if resultats:
             artiste_id = resultats[0].id
+
             url = f"https://api.discogs.com/artists/{artiste_id}/releases"
             headers = {"Authorization": f"Discogs token={DISCOGS_USER_TOKEN}"}
-            params = {"per_page": 50, "page": 1}
             discographie = []
 
+            page = 1
             while True:
+                params = {"per_page": 100, "page": page}
                 reponse = requests.get(url, headers=headers, params=params)
 
                 if reponse.status_code == 200:
@@ -39,15 +41,22 @@ async def get_discography(artist: str):
                         [
                             {
                                 "titre": sortie["title"],
-                                "annee": sortie["year"],
-                                "type": sortie["type"],
+                                "annee": sortie.get("year", "Inconnue"),
+                                "type": sortie.get("type", "Inconnu"),
                             }
                             for sortie in donnees["releases"]
                         ]
                     )
-                return {"discographie": discographie}
-            else:
-                return {"erreur": "Erreur lors de la récupération des sorties"}
+                    if len(donnees["releases"]) < 100:
+                        break
+                    page += 1
+                else:
+                    logger.warning(
+                        f"Échec de la requête pour la page {page}: {reponse.status_code}"
+                    )
+                    break
+
+            return {"discographie": discographie}
         else:
             return {"erreur": "Artiste non trouvé"}
     except Exception as e:
