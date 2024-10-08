@@ -15,7 +15,8 @@ artiste = st.text_input("Entrez le nom d'un artiste ou d'un groupe :")
 if st.button("Rechercher") or st.session_state.discographie:
     if artiste or st.session_state.discographie:
         if not st.session_state.discographie:
-            reponse = requests.get(f"http://localhost:8000/discography/{artiste}")
+            API_URL = "http://localhost:8000"
+            reponse = requests.get(f"{API_URL}/discography/{artiste}")
             if reponse.status_code == 200:
                 donnees = reponse.json()
                 if "discographie" in donnees:
