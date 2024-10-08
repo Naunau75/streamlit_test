@@ -17,3 +17,4 @@ config.read(CONFIG_FILE)
 # Récupérer les valeurs de la section DISCOGS
 DISCOGS_API_KEY = config.get("DISCOGS", "DISCOGS_API_KEY")
 DISCOGS_API_SECRET = config.get("DISCOGS", "DISCOGS_API_SECRET")
+DISCOGS_USER_TOKEN = config.get("DISCOGS", "DISCOGS_USER_TOKEN")

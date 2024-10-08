@@ -3,21 +3,21 @@ import requests
 
 st.title("Recherche de Discographie")
 
-artist = st.text_input("Entrez le nom d'un artiste ou d'un groupe :")
+artiste = st.text_input("Entrez le nom d'un artiste ou d'un groupe :")
 
 if st.button("Rechercher"):
-    if artist:
-        response = requests.get(f"http://localhost:8000/discography/{artist}")
-        if response.status_code == 200:
-            data = response.json()
-            if "discography" in data:
-                st.subheader(f"Discographie de {artist}")
-                for release in data["discography"]:
+    if artiste:
+        reponse = requests.get(f"http://localhost:8000/discography/{artiste}")
+        if reponse.status_code == 200:
+            donnees = reponse.json()
+            if "discographie" in donnees:
+                st.subheader(f"Discographie de {artiste}")
+                for sortie in donnees["discographie"]:
                     st.write(
-                        f"{release['year']} - {release['title']} ({release['type']})"
+                        f"{sortie['annee']} - {sortie['titre']} ({sortie['type']})"
                     )
             else:
-                st.error(data.get("error", "Une erreur s'est produite"))
+                st.error(donnees.get("erreur", "Une erreur s'est produite"))
         else:
             st.error("Erreur lors de la communication avec l'API")
     else:
