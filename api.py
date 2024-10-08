@@ -4,6 +4,7 @@ from config import DISCOGS_USER_TOKEN
 import logging
 import requests
 
+# api fastapi
 app = FastAPI()
 
 # Configuration du logger
